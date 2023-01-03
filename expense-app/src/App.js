@@ -10,7 +10,6 @@ const mockApi = new MockApi()
 const App = () => {
     const [userProfiles, setUserProfiles] = useState([])
     const [isCreateMode, setIsCreateMode] = useState(false)
-    const [selectedUserId, setSelectedUserId] = useState(undefined)
 
     useEffect(() => {
         mockApi.getAll()
@@ -23,18 +22,38 @@ const App = () => {
             })
     }, [])
 
+    const handleCreate = (formData) => {
+        mockApi.create(formData)
+            .then(createdUser => {
+                if (createdUser) {
+                    setUserProfiles([
+                        ...userProfiles,
+                        createdUser
+                    ])
+
+                    console.log(createdUser)
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
     return (
         <div className="app">
-            <TopNav></TopNav>
+            <TopNav />
             <div className="button-container">
                 <button onClick={() => setIsCreateMode(false)}>User List</button>
                 <button onClick={() => setIsCreateMode(true)}>Create User</button>
             </div>
             {isCreateMode && (
-                <CreateUser></CreateUser>
+                <CreateUser 
+                    userProfiles={userProfiles}
+                    handleCreate={handleCreate}    
+                />
             )}
             {!isCreateMode && (
-                <ProfileList userProfiles={userProfiles}></ProfileList>
+                <ProfileList userProfiles={userProfiles} />
             )}
         </div>
     )
