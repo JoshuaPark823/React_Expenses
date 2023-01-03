@@ -1,10 +1,8 @@
 .profiles {
     width: 80%;
-}
 
-.profile {
-    width: 40%;
-    margin: 1rem 5%;
-    border: 1px solid lightslategrey;
-    border-radius: 2.5px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
 }

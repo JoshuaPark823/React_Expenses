@@ -3,14 +3,17 @@ import "./ProfileList.css"
 const ProfileList = ({ userProfiles }) => {
     return (
         <div className="profiles">
-            {userProfiles && (userProfiles.map((profile) => {
+            {userProfiles && userProfiles.map((profile) => {
                 return (
-                    <button className="profile" key={profile.id}>
-                        <h4>{profile.name}</h4>
+                    <div className="profile" key={profile.id}>
+                        <strong>{profile.name}</strong>
                         <p>Last Updated: {profile.updatedAt}</p>
-                    </button>
+                        <p>Location: {profile.city}, {profile.country}</p>
+                        <p>Admin: {profile.isAdmin ? 'Yes' : 'No'}</p>
+                        <hr/>
+                    </div>
                 )
-            }))}
+            })}
         </div>
     )
 }

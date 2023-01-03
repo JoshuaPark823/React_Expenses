@@ -27,11 +27,9 @@ const App = () => {
             .then(createdUser => {
                 if (createdUser) {
                     setUserProfiles([
-                        ...userProfiles,
-                        createdUser
+                        createdUser,
+                        ...userProfiles
                     ])
-
-                    console.log(createdUser)
                 }
             })
             .catch(error => {
@@ -41,14 +39,13 @@ const App = () => {
 
     return (
         <div className="app">
-            <TopNav />
+            <TopNav userProfiles={userProfiles} />
             <div className="button-container">
                 <button onClick={() => setIsCreateMode(false)}>User List</button>
                 <button onClick={() => setIsCreateMode(true)}>Create User</button>
             </div>
             {isCreateMode && (
                 <CreateUser 
-                    userProfiles={userProfiles}
                     handleCreate={handleCreate}    
                 />
             )}

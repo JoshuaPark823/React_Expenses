@@ -1,3 +1,11 @@
-.name-input {
-    margin-bottom: 1rem;
+label, input {
+    display: block;
+}
+
+.form-input {
+    margin-bottom: 0.5rem;
+}
+
+button {
+    margin-top: 1rem;
 }
