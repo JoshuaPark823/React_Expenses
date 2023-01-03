@@ -3,13 +3,14 @@ import TopNav from "./components/TopNav"
 import "./App.css"
 import MockApi from "./api/MockApi"
 import ProfileList from "./components/ProfileList"
-import CreateUser from "./components/CreateUser"
+import CreateEditUser from "./components/CreateEditUser"
 
 const mockApi = new MockApi()
 
 const App = () => {
     const [userProfiles, setUserProfiles] = useState([])
     const [isCreateMode, setIsCreateMode] = useState(false)
+    const [selectedUserId, setSelectedUserId] = useState(undefined)
 
     useEffect(() => {
         mockApi.getAll()
@@ -37,6 +38,28 @@ const App = () => {
             })
     }
 
+    const handleUpdate = (formData) => {
+        mockApi.update(formData)
+            .then(updatedUser => {
+                if (updatedUser) {
+                    // Remove old user from the list of profiles
+                    const profiles = userProfiles.filter(profile => profile.id !== updatedUser.id)
+                    
+                    // Add the updated user at the front
+                    setUserProfiles([
+                        updatedUser,
+                        ...profiles
+                    ])
+
+                    setSelectedUserId(undefined)
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
+    }
+
     return (
         <div className="app">
             <TopNav userProfiles={userProfiles} />
@@ -45,12 +68,19 @@ const App = () => {
                 <button onClick={() => setIsCreateMode(true)}>Create User</button>
             </div>
             {isCreateMode && (
-                <CreateUser 
-                    handleCreate={handleCreate}    
+                <CreateEditUser 
+                    handleCreate={handleCreate}
+                    handleUpdate={handleUpdate}
+                    selectedUserId={selectedUserId}
+                    userProfiles={userProfiles}
                 />
             )}
             {!isCreateMode && (
-                <ProfileList userProfiles={userProfiles} />
+                <ProfileList 
+                    userProfiles={userProfiles} 
+                    setIsCreateMode={setIsCreateMode}
+                    setSelectedUserId={setSelectedUserId}
+                />
             )}
         </div>
     )

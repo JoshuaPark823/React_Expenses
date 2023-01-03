@@ -23,6 +23,19 @@ class MockApi {
         return fetch(Route.Base + `/users/${id}`)
             .then(response => response.json())
     }
+
+    update(data) {
+        const requestOptions = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }
+
+        return fetch(Route.Base + `/users/${data.id}`, requestOptions)
+            .then(response => response.json())
+    }
 }
 
 export default MockApi

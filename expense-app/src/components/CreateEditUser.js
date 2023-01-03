@@ -1,5 +1,5 @@
-import './CreateUser.css'
-import { useState } from 'react';
+import './CreateEditUser.css'
+import { useState, useEffect } from 'react';
 
 const INITIAL_STATE = {
     name: '',
@@ -10,21 +10,51 @@ const INITIAL_STATE = {
     isAdmin: false
 }
 
-const CreateUser = ({ handleCreate }) => {
+const CreateEditUser = ({ 
+    handleCreate,
+    handleUpdate,
+    selectedUserId,
+    userProfiles
+}) => {
     const [formData, setFormData] = useState(INITIAL_STATE)
 
+    useEffect(() => {
+        if (selectedUserId) {
+            const updatingUser = userProfiles.find(profile => profile.id === selectedUserId)
+            loadUpdatingUser(updatingUser)
+        }
+    }, [selectedUserId, userProfiles])
+
+    const loadUpdatingUser = (updatingUser) => {
+        if (updatingUser) {
+            const userForm = {}
+            for (const [key, value] of Object.entries(updatingUser)) {
+                userForm[key] = value
+            }
+            setFormData(userForm)
+        }
+    }
+
     const handleChange = (event) => {
+        const target = event.target
+        const isCheckbox = target.type === 'checkbox'
+
         setFormData({
             ...formData,
-            [event.target.name]: event.target.value
+            [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
         })
     }
 
     const handleSubmit = (event) => {
         event.preventDefault()
 
-        // Create the new user on the parent
-        handleCreate(formData)
+        // Create/Update the user using the handler from the parent
+        if (selectedUserId) {
+            handleUpdate(formData)
+        }
+        else {
+            handleCreate(formData)
+        }
 
         // Reset the form
         setFormData(INITIAL_STATE)
@@ -55,4 +85,4 @@ const CreateUser = ({ handleCreate }) => {
     )
 }
 
-export default CreateUser
+export default CreateEditUser
