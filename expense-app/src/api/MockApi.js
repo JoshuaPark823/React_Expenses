@@ -15,12 +15,20 @@ class MockApi {
     }
 
     getAll() {
-        return fetch(Route.Base + '/users')
+        const requestOptions = {
+            method: 'GET'
+        }
+
+        return fetch(Route.Base + '/users', requestOptions)
             .then(response => response.json())
     }
 
     getOne(id) {
-        return fetch(Route.Base + `/users/${id}`)
+        const requestOptions = {
+            method: 'GET'
+        }
+
+        return fetch(Route.Base + `/users/${id}`, requestOptions)
             .then(response => response.json())
     }
 
@@ -34,6 +42,15 @@ class MockApi {
         }
 
         return fetch(Route.Base + `/users/${data.id}`, requestOptions)
+            .then(response => response.json())
+    }
+
+    delete(id) {
+        const requestOptions = {
+            method: 'DELETE'
+        }
+
+        return fetch(Route.Base + `/users/${id}`, requestOptions)
             .then(response => response.json())
     }
 }

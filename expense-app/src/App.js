@@ -15,8 +15,7 @@ const App = () => {
     useEffect(() => {
         mockApi.getAll()
             .then(profiles => {
-                console.log(profiles)
-                setUserProfiles(profiles)
+                setUserProfiles(profiles.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()))
             })
             .catch(error => {
                 console.log(error)
@@ -31,6 +30,7 @@ const App = () => {
                         createdUser,
                         ...userProfiles
                     ])
+                    handleTabChange(0)
                 }
             })
             .catch(error => {
@@ -51,7 +51,7 @@ const App = () => {
                         ...profiles
                     ])
 
-                    setSelectedUserId(undefined)
+                    handleTabChange(0)
                 }
             })
             .catch(error => {

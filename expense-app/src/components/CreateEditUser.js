@@ -31,23 +31,17 @@ const CreateEditUser = ({
             for (const [key, value] of Object.entries(updatingUser)) {
                 userForm[key] = value
             }
-            console.log('Loading User Form: ')
-            console.log(userForm)
-            setFormData({...userForm})
+
+            setFormData(userForm)
         }
     }
 
     const handleChange = (event) => {
         setFormData({
             ...formData,
-            [event.target.name]: event.target.value
-        })
-    }
-
-    const handleCheckboxChange = (event) => {
-        setFormData({
-            ...formData,
-            [event.target.name]: event.target.checked
+            [event.target.name]: event.target.type === 'checkbox' 
+                ? event.target.checked 
+                : event.target.value
         })
     }
 
@@ -56,7 +50,10 @@ const CreateEditUser = ({
 
         // Create/Update the user using the handler from the parent
         if (selectedUserId) {
-            handleUpdate(formData)
+            handleUpdate({
+                ...formData,
+                'updatedAt': new Date().toISOString()
+            })
         }
         else {
             handleCreate(formData)
@@ -88,8 +85,8 @@ const CreateEditUser = ({
                         name='isAdmin' 
                         type='checkbox' 
                         value={formData.isAdmin} 
-                        onChange={handleCheckboxChange}
-                        checked={formData.isAdmin}    
+                        onChange={handleChange}
+                        checked={formData.isAdmin}
                     />
                 </div>
                 <button type='submit'>Submit</button>
