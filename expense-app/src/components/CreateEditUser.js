@@ -16,7 +16,7 @@ const CreateEditUser = ({
     selectedUserId,
     userProfiles
 }) => {
-    const [formData, setFormData] = useState(INITIAL_STATE)
+    const [formData, setFormData] = useState({...INITIAL_STATE})
 
     useEffect(() => {
         if (selectedUserId) {
@@ -31,17 +31,23 @@ const CreateEditUser = ({
             for (const [key, value] of Object.entries(updatingUser)) {
                 userForm[key] = value
             }
-            setFormData(userForm)
+            console.log('Loading User Form: ')
+            console.log(userForm)
+            setFormData({...userForm})
         }
     }
 
     const handleChange = (event) => {
-        const target = event.target
-        const isCheckbox = target.type === 'checkbox'
-
         setFormData({
             ...formData,
-            [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
+            [event.target.name]: event.target.value
+        })
+    }
+
+    const handleCheckboxChange = (event) => {
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.checked
         })
     }
 
@@ -57,7 +63,7 @@ const CreateEditUser = ({
         }
 
         // Reset the form
-        setFormData(INITIAL_STATE)
+        setFormData({...INITIAL_STATE})
     }
 
     return (
@@ -77,7 +83,14 @@ const CreateEditUser = ({
                 </div>
                 <div className='form-input'>
                     <label htmlFor='isAdmin'>Admin Status</label>
-                    <input id='isAdmin' name='isAdmin' type='checkbox' value={formData.isAdmin} onChange={handleChange}></input>
+                    <input 
+                        id='isAdmin' 
+                        name='isAdmin' 
+                        type='checkbox' 
+                        value={formData.isAdmin} 
+                        onChange={handleCheckboxChange}
+                        checked={formData.isAdmin}    
+                    />
                 </div>
                 <button type='submit'>Submit</button>
             </form>

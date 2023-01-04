@@ -57,15 +57,24 @@ const App = () => {
             .catch(error => {
                 console.log(error)
             })
+    }
 
+    const handleTabChange = (tabIndex) => {
+        if (tabIndex === 0) {
+            setIsCreateMode(false)
+            setSelectedUserId(undefined)
+        }
+        if (tabIndex === 1) {
+            setIsCreateMode(true)
+        }
     }
 
     return (
         <div className="app">
             <TopNav userProfiles={userProfiles} />
             <div className="button-container">
-                <button onClick={() => setIsCreateMode(false)}>User List</button>
-                <button onClick={() => setIsCreateMode(true)}>Create User</button>
+                <button onClick={() => handleTabChange(0)}>User List</button>
+                <button onClick={() => handleTabChange(1)}>Create User</button>
             </div>
             {isCreateMode && (
                 <CreateEditUser 
